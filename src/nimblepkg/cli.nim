@@ -25,15 +25,15 @@ type
     DebugPriority, LowPriority, MediumPriority, HighPriority
 
   DisplayType* = enum
-    Error, Warning, Message, Success
+    Error, Warning, Message, Success, Hint
 
   ForcePrompt* = enum
     dontForcePrompt, forcePromptYes, forcePromptNo
 
 const
   longestCategory = len("Downloading")
-  foregrounds: array[Error .. Success, ForegroundColor] =
-    [fgRed, fgYellow, fgCyan, fgGreen]
+  foregrounds: array[Error .. Hint, ForegroundColor] =
+    [fgRed, fgYellow, fgCyan, fgGreen, fgWhite]
   styles: array[DebugPriority .. HighPriority, set[Style]] =
     [{styleDim}, {styleDim}, {}, {styleBright}]
 

@@ -254,16 +254,20 @@ proc getPackageList*(options: Options): seq[Package] =
         namesAdded.incl(pkg.name)
 
 proc findNimbleFile*(dir: string; error: bool): string =
+  when defined(debug) or not defined(release): display("Searching", ".nimble file in " & dir, Hint, LowPriority)
   result = ""
   var hits = 0
   for kind, path in walkDir(dir):
+    when defined(debug) or not defined(release): display("Checking", "Found entry '" & path & "' of kind " & $kind, Hint, DebugPriority)
     if kind in {pcFile, pcLinkToFile}:
       let ext = path.splitFile.ext
       case ext
       of ".babel", ".nimble":
+        when defined(debug) or not defined(release): display("Found", "File '" & path & "' is a .nimble file.", Success, DebugPriority)
         result = path
         inc hits
-      else: discard
+      else: 
+        when defined(debug) or not defined(release): display("Continuing", "File '" & path & "' is not a .nimble file." , Hint, DebugPriority)
   if hits >= 2:
     raise newException(NimbleError,
         "Only one .nimble file should be present in " & dir)
